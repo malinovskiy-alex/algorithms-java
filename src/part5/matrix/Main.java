@@ -1,4 +1,4 @@
-import part5.matrix.Matrix;
+package part5.matrix;
 
 public class Main
 {

@@ -1,21 +1,21 @@
 package part4;
 
-public class MyCyclicQueue
+public class MyCyclicQueue<T>
 {
-  int[] array;
+  private Object[] array;
   int front;
   int rear;
   int size;
 
   public MyCyclicQueue(int size)
   {
-    array = new int[size];
+    array = new Object[size];
     front = 0;
     rear = -1;
-    size = 0;
+    this.size = 0;
   }
 
-  public void push(int element)
+  public void push(T element)
   {
     if (isFull())
     {
@@ -30,7 +30,7 @@ public class MyCyclicQueue
     size++;
   }
 
-  public int pop()
+  public T pop()
   {
     if (isEmpty())
     {
@@ -41,12 +41,12 @@ public class MyCyclicQueue
       front = 0;
     }
     size--;
-    return array[front++];
+    return (T) array[front++];
   }
 
-  public int peek()
+  public T peek()
   {
-    return array[front];
+    return (T) array[front];
   }
 
   public boolean isEmpty()
@@ -84,5 +84,21 @@ public class MyCyclicQueue
       }
     }
     return result;
+  }
+
+  public T[] toArray()
+  {
+    Object[] result = new Object[size];
+    int index = front;
+    for (int i = 0; i < result.length; i++)
+    {
+      result[i] = array[index];
+      index++;
+      if (index > result.length - 1)
+      {
+        index = 0;
+      }
+    }
+    return (T[]) result;
   }
 }
