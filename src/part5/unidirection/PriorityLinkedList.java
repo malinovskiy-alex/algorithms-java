@@ -2,21 +2,24 @@ package part5.unidirection;
 
 import part5.ListElement;
 
-public class PriorityLinkedList
+public class PriorityLinkedList<T extends Comparable>
 {
-  private ListElement first;
+  private ListElement<T> first;
 
-  public void add(int e)
+  public int size;
+
+  public void add(T e)
   {
-    ListElement element = new ListElement(e);
+    size++;
+    ListElement<T> element = new ListElement<>(e);
     if (first == null)
     {
       first = element;
       return;
     }
-    ListElement currentElement = first;
-    ListElement previousElement = currentElement;
-    while (currentElement != null && currentElement.getValue() < e)
+    ListElement<T> currentElement = first;
+    ListElement<T> previousElement = currentElement;
+    while (currentElement != null && currentElement.getValue().compareTo(e) < 0)
     {
       previousElement = currentElement;
       currentElement = currentElement.getNext();
@@ -52,8 +55,9 @@ public class PriorityLinkedList
     first = previous;
   }
 
-  public ListElement removeLast()
+  public ListElement<T> removeLast()
   {
+    size--;
     ListElement currentElement = first;
     ListElement previousElement = currentElement;
     if (currentElement == null)
@@ -83,13 +87,18 @@ public class PriorityLinkedList
       {
         result += ",";
       }
-      result += +element.getValue();
+      result += element.getValue().toString();
       element = element.getNext();
     }
     return result;
   }
 
-  public ListElement getFirst()
+  public int getSize()
+  {
+    return size;
+  }
+
+  public ListElement<T> getFirst()
   {
     return first;
   }

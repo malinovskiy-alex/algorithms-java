@@ -1,43 +1,48 @@
 package part8;
 
-public class Node
+public class Node<T extends Comparable>
 {
-  private char element;
-  private Node rightChild;
-  private Node leftChild;
+  private T element;
+  private Node<T> rightChild;
+  private Node<T> leftChild;
 
-  public Node(char element)
+  public Node(T element)
   {
     this.element = element;
   }
 
-  public char getElement()
+  public Node()
+  {
+  }
+
+  public T getElement()
   {
     return element;
   }
 
-  public void setElement(char element)
+  public void setElement(T element)
   {
     this.element = element;
   }
 
-  public Node getRightChild()
+  public Node<T> getRightChild()
   {
     return rightChild;
   }
 
-  public void setRightChild(Node rightChild)
+  public void setRightChild(Node<T> rightChild)
   {
     this.rightChild = rightChild;
   }
 
-  public Node getLeftChild()
+  public Node<T> getLeftChild()
   {
     return leftChild;
   }
 
-  public void setLeftChild(Node leftChild)
+  public void setLeftChild(Node<T> leftChild)
   {
     this.leftChild = leftChild;
   }
+
 }

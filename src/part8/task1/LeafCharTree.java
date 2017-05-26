@@ -6,11 +6,11 @@ import utils.MatrixUtils;
 
 public class LeafCharTree
 {
-  private Node root;
+  private Node<Character> root;
 
-  protected Node[] characters;
+  protected Node<Character>[] characters;
 
-  protected TreeOutputBuilder outputBuilder;
+  private TreeOutputBuilder outputBuilder;
 
   public Node getRoot()
   {
@@ -24,10 +24,10 @@ public class LeafCharTree
 
   public LeafCharTree(char... chars)
   {
-    this.characters = new Node[chars.length];
+    this.characters =  new Node[chars.length];
     for (int i = 0; i < chars.length; i++)
     {
-      Node n = new Node(chars[i]);
+      Node<Character> n = new Node<>(chars[i]);
       characters[i] = n;
     }
     outputBuilder = new TreeOutputBuilder(chars.length);
@@ -44,8 +44,8 @@ public class LeafCharTree
   {
     if (characters.length == 1)
     {
-      Node localRoot = new Node('+');
-      Node leftChild = characters[0];
+      Node<Character> localRoot = new Node<>('+');
+      Node<Character> leftChild = characters[0];
       localRoot.setLeftChild(leftChild);
       this.root = localRoot;
     }
@@ -53,9 +53,9 @@ public class LeafCharTree
     {
       for (int i = 1; i < characters.length; i++)
       {
-        Node localRoot = new Node('+');
-        Node leftChild = characters[i - 1];
-        Node rightChild = characters[i];
+        Node<Character> localRoot = new Node<>('+');
+        Node<Character> leftChild = characters[i - 1];
+        Node<Character> rightChild = characters[i];
         localRoot.setLeftChild(leftChild);
         localRoot.setRightChild(rightChild);
         characters[i] = localRoot;

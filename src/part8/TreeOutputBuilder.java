@@ -23,7 +23,7 @@ public class TreeOutputBuilder
     }
   }
 
-  public void buildOutput(Node root)
+  public void buildOutput(Node<Character> root)
   {
     int mid = 1;
     if ((output[0].length - 1) > 1)
@@ -35,7 +35,7 @@ public class TreeOutputBuilder
     inOrder(root.getLeftChild(), 0, mid, 1);
   }
 
-  private void inOrder(Node node, int start, int end, int height)
+  private void inOrder(Node<Character> node, int start, int end, int height)
   {
     if (node != null)
     {

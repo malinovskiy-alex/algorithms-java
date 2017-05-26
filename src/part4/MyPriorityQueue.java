@@ -1,45 +1,53 @@
 package part4;
 
-public class MyPriorityQueue
+public class MyPriorityQueue<T extends Comparable>
 {
-  int[] array;
-  int lastElement;
+  private Object[] array;
+  private int lastElement;
+  private int size;
 
   public MyPriorityQueue(int size)
   {
     lastElement = -1;
-    array = new int[size];
+    array = new Object[size];
   }
 
-  public void push(int element)
+  public void push(T element)
   {
     if (isFull())
     {
       throw new RuntimeException("Queue size is exceed!");
     }
     array[++lastElement] = element;
+    size++;
     int j = lastElement;
-    while (j > 0 && array[j - 1] < element)
+    while (j > 0 && ((T) array[j - 1]).compareTo(element) < 0)
     {
-      int temp = array[j];
+      T temp = (T) array[j];
       array[j] = array[j - 1];
       array[j - 1] = temp;
       j--;
     }
   }
 
-  public int pop()
+  public T pop()
   {
     if (isEmpty())
     {
       throw new RuntimeException("There are no elements in stack!");
     }
-    return array[lastElement--];
+    size--;
+    return (T) array[lastElement--];
   }
 
-  public int peek()
+  public int getSize()
   {
-    return array[lastElement];
+    return size;
+  }
+
+  public T peek()
+  {
+    return (T) array[lastElement];
   }
 
   public boolean isFull()
@@ -49,6 +57,6 @@ public class MyPriorityQueue
 
   public boolean isEmpty()
   {
-    return lastElement == -1;
+    return getSize() == 0;
   }
 }

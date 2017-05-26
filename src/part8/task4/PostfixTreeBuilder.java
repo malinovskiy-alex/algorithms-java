@@ -14,8 +14,8 @@ public class PostfixTreeBuilder extends LeafCharTree
   @Override
   protected void buildTree()
   {
-    MyStack<Node> postfixNodes = new MyStack<>(characters.length);
-    for (Node node : characters)
+    MyStack<Node<Character>> postfixNodes = new MyStack<>(characters.length);
+    for (Node<Character> node : characters)
     {
       if (node.getElement() == '+' || node.getElement() == '-' || node.getElement() == '*' ||
         node.getElement() == '/')

@@ -31,6 +31,7 @@ public class SimpleCharTreeBuilder extends LeafCharTree
     {
       return;
     }
+    String.valueOf(123).length();
     Node leftChild = null;
     int newLeftIndex = nodeIndex * 2;
     Node rightChild = null;

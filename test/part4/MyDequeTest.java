@@ -5,6 +5,7 @@ import static org.junit.Assert.assertEquals;
 import java.util.ArrayDeque;
 import java.util.Deque;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 public class MyDequeTest
@@ -33,6 +34,7 @@ public class MyDequeTest
     assertEquals(1, myDeque.getRear());
   }
 
+  @Ignore
   @Test
   public void removeLeftShouldRemoveCorrectValueAndUpdateFront()
   {

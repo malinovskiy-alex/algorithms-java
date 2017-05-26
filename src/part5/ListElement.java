@@ -1,26 +1,26 @@
 package part5;
 
-public class ListElement
+public class ListElement<T>
 {
-  private int value;
-  private ListElement next;
+  private T value;
+  private ListElement<T> next;
 
-  public ListElement(int value)
+  public ListElement(T value)
   {
     this.value = value;
   }
 
-  public int getValue()
+  public T getValue()
   {
     return value;
   }
 
-  public ListElement getNext()
+  public ListElement<T> getNext()
   {
     return next;
   }
 
-  public void setNext(ListElement next)
+  public void setNext(ListElement<T> next)
   {
     this.next = next;
   }

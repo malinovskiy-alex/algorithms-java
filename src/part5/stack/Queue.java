@@ -3,22 +3,22 @@ package part5.stack;
 import part5.ListElement;
 import part5.cyclic.CyclicList;
 
-public class Queue
+public class Queue<T>
 {
-  private CyclicList innerContainer = new CyclicList();
+  private CyclicList<T> innerContainer = new CyclicList<>();
 
-  public void push(int element)
+  public void push(T element)
   {
     innerContainer.insert(element);
   }
 
-  public ListElement pop()
+  public ListElement<T> pop()
   {
     if (isEmpty())
     {
       return null;
     }
-    int returningElement = innerContainer.getCurrent().getNext().getValue();
+    T returningElement = innerContainer.getCurrent().getNext().getValue();
     return innerContainer.remove(returningElement);
   }
 

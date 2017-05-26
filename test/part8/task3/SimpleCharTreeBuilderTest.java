@@ -21,5 +21,4 @@ public class SimpleCharTreeBuilderTest
 
     assertEquals("", result);
   }
-
 }

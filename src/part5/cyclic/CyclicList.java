@@ -4,47 +4,47 @@ import java.util.List;
 
 import part5.ListElement;
 
-public class CyclicList
+public class CyclicList<T>
 {
-  private ListElement current;
+  private ListElement<T> current;
 
   public void step()
   {
     current = current.getNext();
   }
 
-  public void insert(int value)
+  public void insert(T value)
   {
-    ListElement e = new ListElement(value);
+    ListElement<T> e = new ListElement<>(value);
     if (current == null)
     {
       current = e;
       current.setNext(e);
       return;
     }
-    ListElement next = current.getNext();
+    ListElement<T> next = current.getNext();
     current.setNext(e);
     e.setNext(next);
     step();
   }
 
-  public ListElement getCurrent()
+  public ListElement<T> getCurrent()
   {
     return current;
   }
 
-  public ListElement remove(int value)
+  public ListElement<T> remove(T value)
   {
     if (current == null)
     {
       throw new RuntimeException("List is empty!");
     }
-    ListElement result = null;
-    ListElement breakingChainStart = current;
-    ListElement breakingChainEnd = current.getNext();
+    ListElement<T> result = null;
+    ListElement<T> breakingChainStart = current;
+    ListElement<T> breakingChainEnd = current.getNext();
     breakingChainStart.setNext(null);
     current = breakingChainEnd;
-    if (current.getValue() == value)
+    if (current.getValue().equals(value))
     {
       result = current;
       if (current.getNext() == null)
@@ -60,10 +60,10 @@ public class CyclicList
     }
     while (current.getNext() != null)
     {
-      if (current.getNext().getValue() == value)
+      if (current.getNext().getValue().equals(value))
       {
         result = current.getNext();
-        ListElement nextAfterTarget = result.getNext();
+        ListElement<T> nextAfterTarget = result.getNext();
         if (nextAfterTarget == null)
         {
           breakingChainStart = current;
@@ -80,16 +80,16 @@ public class CyclicList
     return result;
   }
 
-  public ListElement remove()
+  public ListElement<T> remove()
   {
     if (isEmpty())
     {
       throw new RuntimeException("List is empty!");
     }
-    ListElement newEndOfList = current.getNext();
+    ListElement<T> newEndOfList = current.getNext();
     current.setNext(null);
     current = newEndOfList;
-    ListElement result = null;
+    ListElement<T> result = null;
     if (current.getNext() == null)
     {
       result = current;
@@ -110,28 +110,28 @@ public class CyclicList
     return current == null;
   }
 
-  public ListElement find(int value)
+  public ListElement<T> find(T value)
   {
     if (current == null)
     {
       return null;
     }
-    if (current.getValue() == value)
+    if (current.getValue().equals(value))
     {
       return current;
     }
-    ListElement breakingStartChain = current;
-    ListElement breakingEndChain = current.getNext();
-    if (breakingEndChain.getValue() == value)
+    ListElement<T> breakingStartChain = current;
+    ListElement<T> breakingEndChain = current.getNext();
+    if (breakingEndChain.getValue().equals(value))
     {
       return breakingEndChain;
     }
     breakingStartChain.setNext(null);
-    ListElement result = null;
-    ListElement iterator = breakingEndChain;
+    ListElement<T> result = null;
+    ListElement<T> iterator = breakingEndChain;
     while (iterator.getNext() != null)
     {
-      if (iterator.getValue() == value)
+      if (iterator.getValue().equals(value))
       {
         result = iterator;
       }
@@ -149,13 +149,13 @@ public class CyclicList
       return result;
     }
     result += current.getValue();
-    ListElement nextChunkLink = current.getNext();
+    ListElement<T> nextChunkLink = current.getNext();
     if (nextChunkLink == null)
     {
       return result;
     }
     current.setNext(null);
-    ListElement iterator = nextChunkLink;
+    ListElement<T> iterator = nextChunkLink;
     while (iterator.getNext() != null)
     {
       result += "," + iterator.getValue();
@@ -165,14 +165,14 @@ public class CyclicList
     return result;
   }
 
-  public ListElement resolveFlaviusIssue(int step, List<Integer> elements)
+  public ListElement<T> resolveFlaviusIssue(int step, List<T> elements)
   {
     current = null;
     elements.forEach(this::insert);
     step();
     while (size() != 1)
     {
-      ListElement previousElement = null;
+      ListElement<T> previousElement = null;
       for (int i = 0; i < step; i++)
       {
         previousElement = current;
@@ -191,8 +191,8 @@ public class CyclicList
     {
       return size;
     }
-    ListElement startOfChain = current;
-    ListElement endOfChain = current.getNext();
+    ListElement<T> startOfChain = current;
+    ListElement<T> endOfChain = current.getNext();
     startOfChain.setNext(null);
     size += 1;
     current = endOfChain;
