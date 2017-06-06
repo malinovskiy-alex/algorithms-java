@@ -7,6 +7,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.Arrays;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import part5.ListElement;
@@ -16,20 +17,20 @@ public class CyclicListTest
   @Test(timeout = 100)
   public void insertLeftShouldInsertCorrectlyAndSetCorrectFront()
   {
-    CyclicList test = new CyclicList();
+    CyclicList<Integer> test = new CyclicList<>();
 
     test.insert(2);
     test.insert(4);
     test.insert(1);
 
-    assertEquals(1, test.getCurrent().getValue());
-    assertEquals(2, test.getCurrent().getNext().getValue());
+    assertEquals(1, (long)test.getCurrent().getValue());
+    assertEquals(2, (long)test.getCurrent().getNext().getValue());
   }
 
   @Test(timeout = 100)
   public void displayShouldDisplayCorrectValueIfOneElement()
   {
-    CyclicList test = new CyclicList();
+    CyclicList<Integer> test = new CyclicList<>();
 
     test.insert(2);
 
@@ -47,7 +48,7 @@ public class CyclicListTest
   @Test(timeout = 100)
   public void displayShouldDisplayCorrectValueFor5Elements()
   {
-    CyclicList test = new CyclicList();
+    CyclicList<Integer> test = new CyclicList<>();
 
     test.insert(2);
     test.insert(3);
@@ -61,7 +62,7 @@ public class CyclicListTest
   @Test(timeout = 100, expected = RuntimeException.class)
   public void removeShouldThrowExceptionIfListIsEmpty()
   {
-    CyclicList test = new CyclicList();
+    CyclicList<Integer> test = new CyclicList<>();
 
     test.remove(5);
   }
@@ -69,7 +70,7 @@ public class CyclicListTest
   @Test(timeout = 100)
   public void removeShouldWorkCorrectlyRemovingLastElementFromList()
   {
-    CyclicList test = new CyclicList();
+    CyclicList<Integer> test = new CyclicList<>();
 
     test.insert(10);
 
@@ -83,7 +84,7 @@ public class CyclicListTest
   @Test(timeout = 100)
   public void removeShouldChangeNothingWhenNoSuchElementForRemovingInList()
   {
-    CyclicList test = new CyclicList();
+    CyclicList<Integer> test = new CyclicList<>();
 
     test.insert(10);
     test.insert(1);
@@ -99,7 +100,7 @@ public class CyclicListTest
   @Test(timeout = 100)
   public void removeShouldCorrectlyRemoveExistingElementFromList()
   {
-    CyclicList test = new CyclicList();
+    CyclicList<Integer> test = new CyclicList<>();
 
     test.insert(10);
     test.insert(1);
@@ -115,7 +116,7 @@ public class CyclicListTest
   @Test(timeout = 100)
   public void removeShouldCorrectlyRemoveCurrentElementFromList()
   {
-    CyclicList test = new CyclicList();
+    CyclicList<Integer> test = new CyclicList<>();
 
     test.insert(10);
     test.insert(1);
@@ -131,7 +132,7 @@ public class CyclicListTest
   @Test(timeout = 100)
   public void removeShouldCorrectlyRemoveNextAfterCurrentElementFromList()
   {
-    CyclicList test = new CyclicList();
+    CyclicList<Integer> test = new CyclicList<>();
 
     test.insert(10);
     test.insert(1);
@@ -147,7 +148,7 @@ public class CyclicListTest
   @Test
   public void findShouldReturnNullIfElementDoesntExist()
   {
-    CyclicList test = new CyclicList();
+    CyclicList<Integer> test = new CyclicList<>();
 
     test.insert(10);
     test.insert(1);
@@ -283,7 +284,6 @@ public class CyclicListTest
   {
     CyclicList test = new CyclicList();
     ListElement result = test.resolveFlaviusIssue(3, Arrays.asList(1, 2, 3, 4, 5, 6, 7));
-
 
     assertEquals(2, result.getValue());
     assertEquals(1, test.size());

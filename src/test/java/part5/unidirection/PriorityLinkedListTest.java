@@ -9,19 +9,19 @@ public class PriorityLinkedListTest
   @Test(timeout = 100)
   public void removeLastShouldAddElementInNegativeOrder()
   {
-    PriorityLinkedList test = new PriorityLinkedList();
+    PriorityLinkedList<Integer> test = new PriorityLinkedList<>();
     test.add(5);
     test.add(3);
     test.add(1);
     test.add(2);
 
-    assertEquals(5, test.removeLast().getValue());
+    assertEquals(5, (long)test.removeLast().getValue());
   }
 
   @Test(timeout = 100)
   public void reverseShouldMoveSmallestElementOnLastPosition()
   {
-    PriorityLinkedList test = new PriorityLinkedList();
+    PriorityLinkedList<Integer> test = new PriorityLinkedList<>();
     test.add(5);
     test.add(3);
     test.add(1);
@@ -37,7 +37,7 @@ public class PriorityLinkedListTest
   @Test(timeout = 100)
   public void reverseShouldWorkCorrectlyForOneElement()
   {
-    PriorityLinkedList test = new PriorityLinkedList();
+    PriorityLinkedList<Integer> test = new PriorityLinkedList<>();
     test.add(5);
 
     assertEquals("5", test.getDisplayString());
@@ -62,7 +62,7 @@ public class PriorityLinkedListTest
   @Test(timeout = 100)
   public void getDisplayStringShouldReturnStringInNegativeOrder()
   {
-    PriorityLinkedList test = new PriorityLinkedList();
+    PriorityLinkedList<Integer> test = new PriorityLinkedList<>();
     test.add(3);
     test.add(1);
     test.add(2);

@@ -2,9 +2,6 @@ package part4;
 
 import static org.junit.Assert.assertEquals;
 
-import java.util.ArrayDeque;
-import java.util.Deque;
-
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -47,20 +44,4 @@ public class MyDequeTest
     assertEquals(-1, myDeque.getRear());
 
   }
-
-  @Test
-  public void re()
-  {
-    Deque<Integer> deq = new ArrayDeque<>();
-    deq.addFirst(1);
-    deq.addFirst(2);
-    System.out.println(deq.pollLast());
-    deq.addLast(3);
-    System.out.println(deq.pollFirst());
-
-//    assertEquals(-1, myDeque.getFront());
-//    assertEquals(-1, myDeque.getRear());
-
-  }
-
 }
