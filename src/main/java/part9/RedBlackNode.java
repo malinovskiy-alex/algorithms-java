@@ -10,7 +10,21 @@ public class RedBlackNode<T extends Comparable> extends Node<T>
     this.isRed = true;
   }
 
+  private RedBlackNode<T> parent;
+
   private boolean isRed;
+
+  private boolean isLeft;
+
+  public RedBlackNode<T> getParent()
+  {
+    return parent;
+  }
+
+  public void setParent(RedBlackNode<T> parent)
+  {
+    this.parent = parent;
+  }
 
   public boolean isRed()
   {
@@ -20,5 +34,27 @@ public class RedBlackNode<T extends Comparable> extends Node<T>
   public void setRed(boolean red)
   {
     isRed = red;
+  }
+
+  public boolean isLeft()
+  {
+    return isLeft;
+  }
+
+  public void setLeft(boolean left)
+  {
+    isLeft = left;
+  }
+
+  @Override
+  public RedBlackNode<T> getRightChild()
+  {
+    return (RedBlackNode<T>) super.getRightChild();
+  }
+
+  @Override
+  public RedBlackNode<T> getLeftChild()
+  {
+    return (RedBlackNode<T>) super.getLeftChild();
   }
 }
