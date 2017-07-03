@@ -20,7 +20,7 @@ public class RedBlackTree<T extends Comparable>
         if (!currentNode.isRed() && hasTwoRedChildren(currentNode))
         {
           flipColor(currentNode);
-          if (twoRedNodesInRow(parentNode, currentNode))
+          if (twoRedNodesInRow(currentNode))
           {
             if (parentNode.isLeft())
             {
@@ -163,7 +163,6 @@ public class RedBlackTree<T extends Comparable>
         {
           if (parentNode.isLeft())
           {
-            parentNode.setRed(true);
             nodeForInsertion.setParent(grandParent);
             nodeForInsertion.setLeftChild(parentNode);
             nodeForInsertion.setLeft(true);
@@ -174,7 +173,7 @@ public class RedBlackTree<T extends Comparable>
             grandParent.setLeft(false);
             nodeForInsertion.setParent(grandParent.getParent());
             grandParent.getParent().setLeftChild(nodeForInsertion);
-            grandParent.setParent(null);
+            grandParent.setParent(nodeForInsertion);
 
             return;
           }
@@ -199,16 +198,16 @@ public class RedBlackTree<T extends Comparable>
         {
           if (!parentNode.isLeft())
           {
-            parentNode.setRed(true);
             nodeForInsertion.setParent(grandParent);
             nodeForInsertion.setRightChild(parentNode);
             nodeForInsertion.setRed(false);
             nodeForInsertion.setLeft(false);
+            nodeForInsertion.setLeftChild(grandParent);
+            nodeForInsertion.setParent(grandParent.getParent());
+            parentNode.setRed(true);
             parentNode.setLeft(false);
             parentNode.setLeftChild(null);
             parentNode.setParent(nodeForInsertion);
-            nodeForInsertion.setLeftChild(grandParent);
-            nodeForInsertion.setParent(grandParent.getParent());
             grandParent.setLeft(true);
             grandParent.getParent().setRightChild(nodeForInsertion);
             grandParent.setParent(null);
@@ -236,9 +235,9 @@ public class RedBlackTree<T extends Comparable>
     }
   }
 
-  private boolean twoRedNodesInRow(RedBlackNode parent, RedBlackNode child)
+  private boolean twoRedNodesInRow(RedBlackNode child)
   {
-    return parent != null && parent.isRed() && child.isRed();
+    return child.getParent() != null && child.getParent().isRed() && child.isRed();
   }
 
   private boolean hasTwoRedChildren(RedBlackNode<T> node)
