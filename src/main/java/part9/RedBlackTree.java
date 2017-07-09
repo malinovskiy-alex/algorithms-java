@@ -13,147 +13,46 @@ public class RedBlackTree<T extends Comparable>
     }
     else
     {
+      RedBlackNode<T> nodeForInsertion = new RedBlackNode<>(element);
       RedBlackNode<T> parentNode = null;
       RedBlackNode<T> currentNode = this.root;
       while (currentNode != null)
       {
-        if (!currentNode.isRed() && hasTwoRedChildren(currentNode))
+        if (currentNode.flipColorRequired())
         {
           flipColor(currentNode);
-          if (twoRedNodesInRow(currentNode))
+        }
+        if (twoRedNodesInRow(currentNode))
+        {
+          if (parentNode.isLeft())
           {
-            if (parentNode.isLeft())
+            if (currentNode.isLeft())
             {
-              parentNode.getParent().setRed(true);
-              //left outer child
-              if (currentNode.isLeft())
-              {
-                parentNode.setRed(false);
-                //unlink right node
-                RedBlackNode<T> unlinkedNode = parentNode.getRightChild();
-                parentNode.getParent().setLeft(false);
-                parentNode.setRightChild(parentNode.getParent());
-                parentNode.getParent().setLeftChild(unlinkedNode);
-                unlinkedNode.setLeft(true);
-                if (parentNode.getParent() == this.root)
-                {
-                  this.root = parentNode;
-                  parentNode.setParent(null);
-                }
-                flipColor(parentNode);
-              }
-              else
-              {
-                //left inner child
-                currentNode.setRed(false);
-                //unlink left child from parent
-                RedBlackNode<T> unlinkedNode = currentNode.getLeftChild();
-                parentNode.getParent().setLeftChild(currentNode);
-                parentNode.setRightChild(unlinkedNode);
-                unlinkedNode.setParent(parentNode);
-                unlinkedNode.setLeft(false);
-                currentNode.setParent(parentNode.getParent());
-                currentNode.setLeftChild(parentNode);
-                parentNode.setParent(currentNode);
-
-                RedBlackNode<T> unlinkedParent = currentNode.getParent();
-                if (currentNode.getParent() == this.root)
-                {
-                  this.root = currentNode;
-                  currentNode.setParent(null);
-                }else {
-                  //
-                }
-                //unlink right child from current
-                RedBlackNode<T> unlinkedRightNode = currentNode.getRightChild();
-                unlinkedRightNode.setLeft(true);
-                unlinkedParent.setLeftChild(unlinkedRightNode);
-                unlinkedRightNode.setParent(unlinkedParent);
-                currentNode.setRightChild(unlinkedParent);
-                unlinkedParent.setParent(currentNode);
-
-                flipColor(currentNode);
-              }
+              balanceOuterLeftNodeBeforeInsertion(currentNode);
             }
             else
             {
-              if (currentNode.isLeft())
-              {
-                //right inner child
-                currentNode.setRed(false);
-                //unlink right child from parent
-                RedBlackNode<T> unlinkedNode = currentNode.getRightChild();
-                parentNode.getParent().setRightChild(currentNode);
-                parentNode.setLeftChild(unlinkedNode);
-                unlinkedNode.setParent(parentNode);
-                unlinkedNode.setLeft(true);
-                currentNode.setParent(parentNode.getParent());
-                currentNode.setRightChild(parentNode);
-                parentNode.setParent(currentNode);
-
-                RedBlackNode<T> unlinkedParent = currentNode.getParent();
-                if (currentNode.getParent() == this.root)
-                {
-                  this.root = currentNode;
-                  currentNode.setParent(null);
-                }else {
-                  //
-                }
-                //unlink right child from current
-                RedBlackNode<T> unlinkedLeftNode = currentNode.getLeftChild();
-                unlinkedParent.setRightChild(unlinkedLeftNode);
-                unlinkedLeftNode.setLeft(false);
-                unlinkedLeftNode.setParent(unlinkedParent);
-                currentNode.setLeftChild(unlinkedParent);
-                unlinkedParent.setLeft(true);
-                unlinkedParent.setParent(currentNode);
-
-                flipColor(currentNode);
-              }
-              else
-              {
-                parentNode.getParent().setRed(true);
-                //right outer child
-                parentNode.setRed(false);
-                //unlink right node
-                RedBlackNode<T> unlinkedNode = parentNode.getLeftChild();
-                parentNode.getParent().setLeft(true);
-                parentNode.setLeftChild(parentNode.getParent());
-                parentNode.getParent().setRightChild(unlinkedNode);
-                unlinkedNode.setLeft(false);
-                if (parentNode.getParent() == this.root)
-                {
-                  this.root = parentNode;
-                  parentNode.setParent(null);
-                }
-
-                flipColor(parentNode);
-              }
+              balanceInnerLeftNodeBeforeInsertion(currentNode);
+            }
+          }
+          else
+          {
+            if (currentNode.isLeft())
+            {
+              balanceInnerRightNodeBeforeInsertion(currentNode);
+            }
+            else
+            {
+              balanceOuterRightNodeBeforeInsertion(currentNode);
             }
           }
         }
         parentNode = currentNode;
-        if (element.compareTo(currentNode.getElement()) < 0)
-        {
-          currentNode = currentNode.getLeftChild();
-        }
-        else
-        {
-          currentNode = currentNode.getRightChild();
-        }
+        currentNode = currentNode.getNextChild(nodeForInsertion);
       }
-      RedBlackNode<T> nodeForInsertion = new RedBlackNode<>(element);
-      nodeForInsertion.setParent(parentNode);
-      if (element.compareTo(parentNode.getElement()) < 0)
-      {
-        nodeForInsertion.setLeft(true);
-        parentNode.setLeftChild(nodeForInsertion);
-      }
-      else
-      {
-        nodeForInsertion.setLeft(false);
-        parentNode.setRightChild(nodeForInsertion);
-      }
+
+      parentNode.insertNode(nodeForInsertion);
+
       if (parentNode.isRed())
       {
         RedBlackNode<T> grandParent = parentNode.getParent();
@@ -163,88 +62,219 @@ public class RedBlackTree<T extends Comparable>
         {
           if (parentNode.isLeft())
           {
-            nodeForInsertion.setParent(grandParent);
-            nodeForInsertion.setLeftChild(parentNode);
-            nodeForInsertion.setLeft(true);
-            nodeForInsertion.setRed(false);
-            parentNode.setRightChild(null);
-            parentNode.setParent(nodeForInsertion);
-            nodeForInsertion.setRightChild(grandParent);
-            grandParent.setLeft(false);
-            nodeForInsertion.setParent(grandParent.getParent());
-            grandParent.getParent().setLeftChild(nodeForInsertion);
-            grandParent.setParent(nodeForInsertion);
-
+            balanceInnerRightNodeAfterInsertion(nodeForInsertion);
             return;
           }
 
-          if (this.root == grandParent)
-          {
-            this.root = parentNode;
-            parentNode.setParent(null);
-            parentNode.setLeftChild(grandParent);
-            grandParent.setLeft(true);
-            grandParent.setParent(parentNode);
-          }
-          else
-          {
-            grandParent.getParent().setRightChild(parentNode);
-            parentNode.setLeft(false);
-            parentNode.setLeftChild(grandParent);
-            grandParent.setLeft(true);
-          }
+          balanceOuterRightNodeAfterInsertion(nodeForInsertion);
         }
         else
         {
           if (!parentNode.isLeft())
           {
-            nodeForInsertion.setParent(grandParent);
-            nodeForInsertion.setRightChild(parentNode);
-            nodeForInsertion.setRed(false);
-            nodeForInsertion.setLeft(false);
-            nodeForInsertion.setLeftChild(grandParent);
-            nodeForInsertion.setParent(grandParent.getParent());
-            parentNode.setRed(true);
-            parentNode.setLeft(false);
-            parentNode.setLeftChild(null);
-            parentNode.setParent(nodeForInsertion);
-            grandParent.setLeft(true);
-            grandParent.getParent().setRightChild(nodeForInsertion);
-            grandParent.setParent(null);
-
+            balanceInnerLeftNodeAfterInsertion(nodeForInsertion);
             return;
           }
 
-          if (this.root == grandParent)
-          {
-            this.root = parentNode;
-            parentNode.setParent(null);
-            parentNode.setRightChild(grandParent);
-            grandParent.setLeft(false);
-            grandParent.setParent(parentNode);
-          }
-          else
-          {
-            grandParent.getParent().setLeftChild(parentNode);
-            parentNode.setLeft(true);
-            parentNode.setRightChild(grandParent);
-            grandParent.setLeft(false);
-          }
+          balanceOuterLeftNodeAfterInsertion(nodeForInsertion);
         }
       }
+    }
+  }
+
+  private void balanceInnerLeftNodeBeforeInsertion(RedBlackNode<T> currentNode)
+  {
+    RedBlackNode<T> parentNode = currentNode.getParent();
+    RedBlackNode<T> grandParent = parentNode.getParent();
+
+    //left inner child
+    currentNode.setRed(false);
+    //unlink left child from parent
+    RedBlackNode<T> unlinkedNode = currentNode.getLeftChild();
+    grandParent.setLeftChild(currentNode);
+    parentNode.setRightChild(unlinkedNode);
+    unlinkedNode.setParent(parentNode);
+    unlinkedNode.setLeft(false);
+    currentNode.setParent(grandParent);
+    currentNode.setLeftChild(parentNode);
+    parentNode.setParent(currentNode);
+
+    RedBlackNode<T> unlinkedParent = currentNode.getParent();
+    if (this.root == unlinkedParent)
+    {
+      this.root = currentNode;
+      currentNode.setParent(null);
+    }
+    //unlink right child from current
+    RedBlackNode<T> unlinkedRightNode = currentNode.getRightChild();
+    unlinkedRightNode.setLeft(true);
+    unlinkedParent.setLeftChild(unlinkedRightNode);
+    unlinkedRightNode.setParent(unlinkedParent);
+    currentNode.setRightChild(unlinkedParent);
+    unlinkedParent.setParent(currentNode);
+
+    flipColor(currentNode);
+  }
+
+  private void balanceOuterLeftNodeBeforeInsertion(RedBlackNode<T> node)
+  {
+    RedBlackNode<T> parentNode = node.getParent();
+    RedBlackNode<T> grandParent = parentNode.getParent();
+
+    grandParent.setRed(true);
+    parentNode.setRed(false);
+    grandParent.setLeft(false);
+    //unlink right node
+    RedBlackNode<T> unlinkedNode = parentNode.getRightChild();
+    parentNode.setRightChild(grandParent);
+    grandParent.setLeftChild(unlinkedNode);
+    unlinkedNode.setLeft(true);
+    if (this.root == grandParent)
+    {
+      this.root = parentNode;
+      parentNode.setParent(null);
+    }
+    flipColor(parentNode);
+  }
+
+
+  private void balanceOuterRightNodeBeforeInsertion(RedBlackNode<T> node)
+  {
+    RedBlackNode<T> parentNode = node.getParent();
+    RedBlackNode<T> grandParent = parentNode.getParent();
+
+    grandParent.setRed(true);
+    parentNode.setRed(false);
+    grandParent.setLeft(true);
+
+    //unlink left node
+    RedBlackNode<T> unlinkedNode = parentNode.getLeftChild();
+    parentNode.setLeftChild(grandParent);
+    grandParent.setRightChild(unlinkedNode);
+    unlinkedNode.setLeft(false);
+    if (this.root == grandParent)
+    {
+      this.root = parentNode;
+      parentNode.setParent(null);
+    }
+
+    flipColor(parentNode);
+  }
+
+  private void balanceInnerRightNodeBeforeInsertion(RedBlackNode<T> currentNode)
+  {
+    RedBlackNode<T> parentNode = currentNode.getParent();
+    RedBlackNode<T> grandParent = parentNode.getParent();
+
+    //right inner child
+    currentNode.setRed(false);
+    //unlink right child from parent
+    RedBlackNode<T> unlinkedNode = currentNode.getRightChild();
+    grandParent.setRightChild(currentNode);
+    parentNode.setLeftChild(unlinkedNode);
+    unlinkedNode.setParent(parentNode);
+    unlinkedNode.setLeft(true);
+    currentNode.setParent(grandParent);
+    currentNode.setRightChild(parentNode);
+    parentNode.setParent(currentNode);
+
+    RedBlackNode<T> unlinkedParent = currentNode.getParent();
+    if (this.root == unlinkedParent)
+    {
+      this.root = currentNode;
+      currentNode.setParent(null);
+    }
+    //unlink right child from current
+    RedBlackNode<T> unlinkedLeftNode = currentNode.getLeftChild();
+    unlinkedParent.setRightChild(unlinkedLeftNode);
+    unlinkedLeftNode.setLeft(false);
+    unlinkedLeftNode.setParent(unlinkedParent);
+    currentNode.setLeftChild(unlinkedParent);
+    unlinkedParent.setLeft(true);
+    unlinkedParent.setParent(currentNode);
+
+    flipColor(currentNode);
+  }
+
+  private void balanceInnerRightNodeAfterInsertion(RedBlackNode<T> nodeForInsertion)
+  {
+    RedBlackNode<T> parentNode = nodeForInsertion.getParent();
+    RedBlackNode<T> grandParent = parentNode.getParent();
+    nodeForInsertion.setParent(grandParent);
+    nodeForInsertion.setLeftChild(parentNode);
+    nodeForInsertion.setLeft(true);
+    nodeForInsertion.setRed(false);
+    nodeForInsertion.setRightChild(grandParent);
+    nodeForInsertion.setParent(grandParent.getParent());
+    parentNode.setRightChild(null);
+    parentNode.setParent(nodeForInsertion);
+    grandParent.setLeft(false);
+    grandParent.getParent().setLeftChild(nodeForInsertion);
+    grandParent.setParent(nodeForInsertion);
+  }
+
+  private void balanceInnerLeftNodeAfterInsertion(RedBlackNode<T> nodeForInsertion)
+  {
+    RedBlackNode<T> parentNode = nodeForInsertion.getParent();
+    RedBlackNode<T> grandParent = parentNode.getParent();
+    nodeForInsertion.setParent(grandParent);
+    nodeForInsertion.setRightChild(parentNode);
+    nodeForInsertion.setLeft(false);
+    nodeForInsertion.setRed(false);
+    nodeForInsertion.setLeftChild(grandParent);
+    nodeForInsertion.setParent(grandParent.getParent());
+    parentNode.setLeftChild(null);
+    parentNode.setParent(nodeForInsertion);
+    grandParent.setLeft(true);
+    grandParent.getParent().setRightChild(nodeForInsertion);
+    grandParent.setParent(null);
+  }
+
+  private void balanceOuterLeftNodeAfterInsertion(RedBlackNode<T> node)
+  {
+    RedBlackNode<T> parentNode = node.getParent();
+    RedBlackNode<T> grandParent = parentNode.getParent();
+    if (this.root == grandParent)
+    {
+      this.root = parentNode;
+      parentNode.setParent(null);
+      parentNode.setRightChild(grandParent);
+      grandParent.setLeft(false);
+      grandParent.setParent(parentNode);
+    }
+    else
+    {
+      grandParent.getParent().setLeftChild(parentNode);
+      parentNode.setLeft(true);
+      parentNode.setRightChild(grandParent);
+      grandParent.setLeft(false);
+    }
+  }
+
+  private void balanceOuterRightNodeAfterInsertion(RedBlackNode<T> node)
+  {
+    RedBlackNode<T> parentNode = node.getParent();
+    RedBlackNode<T> grandParent = parentNode.getParent();
+    if (this.root == grandParent)
+    {
+      this.root = parentNode;
+      parentNode.setParent(null);
+      parentNode.setLeftChild(grandParent);
+      grandParent.setLeft(true);
+      grandParent.setParent(parentNode);
+    }
+    else
+    {
+      grandParent.getParent().setRightChild(parentNode);
+      parentNode.setLeft(false);
+      parentNode.setLeftChild(grandParent);
+      grandParent.setLeft(true);
     }
   }
 
   private boolean twoRedNodesInRow(RedBlackNode child)
   {
     return child.getParent() != null && child.getParent().isRed() && child.isRed();
-  }
-
-  private boolean hasTwoRedChildren(RedBlackNode<T> node)
-  {
-    boolean isLeftChildRed = node.getLeftChild() != null && node.getLeftChild().isRed();
-    boolean isRightChildRed = node.getRightChild() != null && node.getRightChild().isRed();
-    return isLeftChildRed && isRightChildRed;
   }
 
   private void flipColor(RedBlackNode<T> node)

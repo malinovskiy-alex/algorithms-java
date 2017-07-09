@@ -46,6 +46,49 @@ public class RedBlackNode<T extends Comparable> extends Node<T>
     isLeft = left;
   }
 
+  public RedBlackNode<T> getNextChild(RedBlackNode<T> nodeForInsertion)
+  {
+    if (nodeForInsertion.greater(this))
+    {
+      return this.getRightChild();
+    }
+    else
+    {
+      return this.getLeftChild();
+    }
+  }
+
+  public void insertNode(RedBlackNode<T> nodeForInsertion)
+  {
+    nodeForInsertion.setParent(this);
+    if (nodeForInsertion.greater(this))
+    {
+      nodeForInsertion.setLeft(false);
+      this.setRightChild(nodeForInsertion);
+    }
+    else
+    {
+      nodeForInsertion.setLeft(true);
+      this.setLeftChild(nodeForInsertion);
+    }
+  }
+
+  public boolean greater(RedBlackNode<T> node)
+  {
+    return getElement().compareTo(node.getElement()) > 0;
+  }
+
+  public boolean flipColorRequired()
+  {
+    if (this.isRed())
+    {
+      return false;
+    }
+    boolean isLeftChildRed = this.getLeftChild() != null && this.getLeftChild().isRed();
+    boolean isRightChildRed = this.getRightChild() != null && this.getRightChild().isRed();
+    return isLeftChildRed && isRightChildRed;
+  }
+
   @Override
   public RedBlackNode<T> getRightChild()
   {
