@@ -23,7 +23,7 @@ public class Tree234Test
   }
 
   @Test
-  public void splitShouldCreateNewRootFromFirstElementWith2Chilren()
+  public void splitShouldCreateNewRootFromFirstElementWith2Children()
   {
     Tree234<Integer> tree234 = new Tree234<>();
     tree234.insert(5);
@@ -41,11 +41,26 @@ public class Tree234Test
     tree234.insert(5);
     tree234.insert(13);
     tree234.insert(10);
-    tree234.insert(4);
-    tree234.insert(7);
-    tree234.insert(6);
+    tree234.insert(15);
+    tree234.insert(8);
+    tree234.insert(12);
     tree234.insert(1);
 
     assertEquals(1, (int) tree234.getMin());
+  }
+
+  @Test
+  public void shouldPrintValuesByOrder()
+  {
+    Tree234<Integer> tree234 = new Tree234<>();
+    tree234.insert(5);
+    tree234.insert(13);
+    tree234.insert(10);
+    tree234.insert(15);
+    tree234.insert(8);
+    tree234.insert(12);
+    tree234.insert(1);
+
+    tree234.symmetricPrint();
   }
 }

@@ -30,21 +30,17 @@ public class Node234<T extends Comparable>
 
   public Node234<T> getNextChildNode(T element)
   {
-    int elementsCount = 0;
-    while (elementsCount < dataElementsSize && element.compareTo(dataArray[elementsCount]) > 0)
+    int elementIndex = 0;
+    while (elementIndex < (dataElementsSize - 1) && element.compareTo(dataArray[elementIndex]) > 0)
     {
-      elementsCount++;
+      elementIndex++;
     }
-    if (element.compareTo(dataArray[elementsCount]) > 0)
+    if (element.compareTo(dataArray[elementIndex]) > 0)
     {
-      return childArray[elementsCount++];
+      elementIndex++;
+      return childArray[elementIndex];
     }
-    return childArray[elementsCount--];
-  }
-
-  public Node234<T> getMinChild()
-  {
-    return childArray[0];
+    return childArray[elementIndex--];
   }
 
   public void insertChild(Node234<T> child, int index)
@@ -65,6 +61,11 @@ public class Node234<T extends Comparable>
     dataArray[index] = null;
     dataElementsSize--;
     return result;
+  }
+
+  public Node234<T> getChildAt(int index)
+  {
+    return childArray[index];
   }
 
   public int getDataElementsSize()
