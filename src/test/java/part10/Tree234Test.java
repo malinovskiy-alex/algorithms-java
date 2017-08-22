@@ -14,9 +14,9 @@ public class Tree234Test
     tree234.insert(1);
     tree234.insert(10);
 
-    Node234<Integer> root = tree234.getRoot();
+    NodeMultiChild<Integer> root = tree234.getRoot();
 
-    assertEquals(3, root.getDataElementsSize());
+    assertEquals(3, root.getExistingElements());
     assertEquals(1, (int) root.getDataArray()[0]);
     assertEquals(5, (int) root.getDataArray()[1]);
     assertEquals(10, (int) root.getDataArray()[2]);

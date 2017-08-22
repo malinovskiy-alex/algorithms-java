@@ -2,7 +2,7 @@ package part10;
 
 public class Tree234<T extends Comparable>
 {
-  private Node234<T> root;
+  private NodeMultiChild<T> root;
 
   public T getMin()
   {
@@ -10,7 +10,7 @@ public class Tree234<T extends Comparable>
     {
       return null;
     }
-    Node234<T> minLeaf = this.root;
+    NodeMultiChild<T> minLeaf = this.root;
     while (!minLeaf.isLeaf())
     {
       minLeaf = minLeaf.getChildAt(0);
@@ -22,13 +22,13 @@ public class Tree234<T extends Comparable>
   {
     if (this.root == null)
     {
-      Node234<T> root = new Node234<>();
+      NodeMultiChild<T> root = new NodeMultiChild<>(3);
       root.insertInDataArray(element);
       this.root = root;
     }
     else
     {
-      Node234<T> nodeForInsertion = this.root;
+      NodeMultiChild<T> nodeForInsertion = this.root;
       while (!nodeForInsertion.isLeaf())
       {
         if (nodeForInsertion.isFull())
@@ -47,21 +47,23 @@ public class Tree234<T extends Comparable>
     }
   }
 
-  private void split(Node234<T> node)
+  private void split(NodeMultiChild<T> node)
   {
-    Node234<T> root = node.getParent();
+    NodeMultiChild<T> root = node.getParent();
     T nodeToMoveUp = node.extractDataElement(1);
     T leftElement = node.extractDataElement(2);
-    Node234<T> newLeftNode = new Node234<>();
+    NodeMultiChild<T> newLeftNode = new NodeMultiChild<>(3);
     newLeftNode.insertInDataArray(leftElement);
     if (root != null)
     {
       int indexForRootInsertion = root.insertInDataArray(nodeToMoveUp);
-      Node234<T> child1 = node.extractChild(2);
-      Node234<T> child2 = node.extractChild(3);
+      NodeMultiChild<T> child1 = node.extractChild(2);
+      NodeMultiChild<T> child2 = node.extractChild(3);
       newLeftNode.insertChild(child1, 0);
       newLeftNode.insertChild(child2, 1);
-      for (int i = indexForRootInsertion; i < root.getDataElementsSize() + 1; i++)
+      child1.setParent(newLeftNode);
+      child2.setParent(newLeftNode);
+      for (int i = indexForRootInsertion; i < root.getExistingElements() + 1; i++)
       {
         root.insertChild(root.extractChild(i), i + 1);
       }
@@ -70,10 +72,11 @@ public class Tree234<T extends Comparable>
     }
     else
     {
-      Node234<T> newRoot = new Node234<>();
+      NodeMultiChild<T> newRoot = new NodeMultiChild<>(3);
       newRoot.insertInDataArray(nodeToMoveUp);
       newRoot.insertChild(node, 0);
       newRoot.insertChild(newLeftNode, 1);
+      newLeftNode.setParent(newRoot);
       node.setParent(newRoot);
       this.root = newRoot;
     }
@@ -84,13 +87,13 @@ public class Tree234<T extends Comparable>
     symmetricPrint(this.root);
   }
 
-  private void symmetricPrint(Node234<T> node)
+  private void symmetricPrint(NodeMultiChild<T> node)
   {
     if (node == null)
     {
       return;
     }
-    for (int i = 0; i < node.getDataElementsSize(); i++)
+    for (int i = 0; i < node.getExistingElements(); i++)
     {
       if (i == 0)
       {
@@ -101,7 +104,7 @@ public class Tree234<T extends Comparable>
     }
   }
 
-  public Node234<T> getRoot()
+  public NodeMultiChild<T> getRoot()
   {
     return root;
   }
